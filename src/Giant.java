@@ -1,7 +1,4 @@
-import org.omg.CORBA.Object;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Giant {
@@ -10,13 +7,37 @@ public class Giant {
     public static final String ANSI_GREEN = "\u001B[32m";
 
     String [] wordsArray = {"fee", "fii", "foo", "fum", "I", "smell", "the", "blood", "of", "an", "Englishman"};
-    Stack<Test> tests;
+    Stack<Test> _tests;
 
     double coverage;
 
+    void push(Test o){
+        _tests.push((Test) o);
+    }
+
+    void run(){
+        _setup();
+        _call();
+        _finish();
+    }
+
+    void _setup(){
+
+    }
+
+    void _call(){
+        while (!_tests.empty()){
+            _test(_tests.pop());
+        }
+    }
+
+    void _test(Test t){
+
+    }
+
     class Test{
         String id;
-        String name;
+        String ofWhat;
         Object testObject;
         Object testWhichMethod;
         String before;
@@ -26,7 +47,11 @@ public class Giant {
         boolean isTestPassed;
         int passed;
         int failed;
-        double passVFail;
+        int totalCases;
+
+        Test(){
+
+        }
 
         class Case {
             String id;
@@ -37,7 +62,7 @@ public class Giant {
         }
 
         void named(Object o){
-            name = String.valueOf(o);
+            ofWhat = String.valueOf(o);
         }
 
         void title(Object o){
@@ -104,10 +129,12 @@ public class Giant {
         }
 
         void testIntroMessage(){
-
+            alert("Test of " + ofWhat + ".");
         }
 
-        void testExitMessage(){}
+        void testExitMessage(){
+            alert("Test passed at " + ((passed-failed)/totalCases));
+        }
 
         void countClasses(){
 
@@ -445,21 +472,17 @@ public class Giant {
 //
 //    }
 
-    public void finish(){
-        alert("\nTests finished!");
+    public void _finish(){
+        alert("\nAll _tests finished!");
     }
-
     private void alert(String message){
         System.out.println(message);
     }
     private void alertl(String message){
         System.out.print(message);
     }
-    private void passed(String message){
-        System.out.print(" + " + ANSI_GREEN + "PASSED - " + ANSI_RESET + message);
-    }
-    private void failed(String message){
-        System.out.print(" - " + ANSI_RED + "FAILED - " + ANSI_RESET + message);
-    }
+    private void casePassed(String message){ System.out.print(" + " + ANSI_GREEN + "PASSED - " + ANSI_RESET + message); }
+    private void caseFailed(String message){ System.out.print(" - " + ANSI_RED + "FAILED - " + ANSI_RESET + message); }
+    private void testResultMessage(){}
 
 }
